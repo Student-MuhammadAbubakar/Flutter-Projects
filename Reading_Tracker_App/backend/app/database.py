@@ -52,16 +52,19 @@ class Database:
                 "status": row[5]
             })
         return books
-    def Search_get(self, title:str)->dict[str,Any]:
+    def Search_get(self, title: str) -> dict[str, Any] | None:
         self.cur.execute("""SELECT * FROM Books WHERE title = ?""", (title,))
         row = self.cur.fetchone()
-        return{
-            "Title":row[1],
-            "Author":row[2],
-            "Total_pages":row[3],
-            "Reading_Pages":row[4],
-            "Status":row[5]
-        }
+        if row:
+            return {
+                "id": row[0],
+                "title": row[1],
+                "author": row[2],
+                "total_pages": row[3],
+                "pages_read": row[4],
+                "status": row[5]
+            }
+        return None
     def UpdateBook(self, book_id:int, books:BookUpdate):
         self.cur.execute(
             """UPDATE Books SET pages_read = ?, status = ? WHERE id = ?""",

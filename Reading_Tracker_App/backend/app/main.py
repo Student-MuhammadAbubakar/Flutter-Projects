@@ -2,7 +2,17 @@ from fastapi import FastAPI, HTTPException
 from app.schema import BookCreate, BookUpdate
 from app.database import Database
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # For development only – restrict in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 db = Database()
 
