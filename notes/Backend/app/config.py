@@ -8,15 +8,20 @@ class Database_Settings(BaseSettings):
     POSTGRES_PASSWORD: Optional[str] = None
     POSTGRES_DB: Optional[str] = None
     SECRET_KEY: Optional[str] = None
-    model_config=SettingsConfigDict(
+
+    model_config = SettingsConfigDict(
         env_file="./.env",
         env_ignore_empty=True,
         extra="ignore"
     )
+
     def Postregres_URL(self):
-        return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        return (
+            f"postgresql+asyncpg://"
+            f"{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+            f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}"
+            f"/{self.POSTGRES_DB}"
+            f"?ssl=require"
+        )
 
 Settings = Database_Settings()
-print(Settings.POSTGRES_USER)
-print(Settings.POSTGRES_PASSWORD)
-print(Settings.Postregres_URL())
